@@ -6,7 +6,7 @@
   'use strict';
   const C = window.TRENDLINE_CONFIG || {};
   const SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
-  const NEEDS_SETUP = !C.googleClientId || /PASTE-YOUR-CLIENT-ID/.test(C.googleClientId);
+  const NEEDS_SETUP = !C.googleClientId || /884648616332-06tvbjg646qrccsv15un3i2jttvdufd5.apps.googleusercontent.com/.test(C.googleClientId);
   let token = null, expiresAt = 0, client = null, timer = null, busy = false;
 
   /* ---------- theme (remembered per browser) ---------- */
