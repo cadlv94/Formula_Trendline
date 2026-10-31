@@ -4,7 +4,7 @@ window.TRENDLINE_CONFIG = {
   /* OAuth 2.0 Client ID (type "Web application") from Google Cloud Console.
      Authorized JavaScript origins must include this site's address,
      e.g. https://YOUR-GITHUB-USERNAME.github.io  (see README, step 2). */
-  googleClientId: 'PASTE-YOUR-CLIENT-ID.apps.googleusercontent.com',
+  googleClientId: '884648616332-06tvbjg646qrccsv15un3i2jttvdufd5.apps.googleusercontent.com',
 
   /* The "Formulation Trendline — live feed" sheet (IMPORTRANGE of All_Data). */
   feedSheetId: '1m0VuAyeN1YB1hWgQtasHFNoatIKgDO1gWH-LKw6tbSA',
