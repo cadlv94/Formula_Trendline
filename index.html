@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Formulation Trendline</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+<header class="top"><div class="wrap" style="padding-block:0">
+<div class="topin">
+  <div>
+    <h1>Formulation Trendline</h1>
+    <div class="docline">PRx&nbsp;-&nbsp;STRL&nbsp;·&nbsp;503A sterile compounding&nbsp;·&nbsp;CoA potency by ingredient</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span class="livepill"><span class="livedot" id="dot"></span><span id="livetext">Connecting…</span></span>
+    <button class="btn" id="refresh" type="button">Refresh</button>
+    <button class="btn" id="theme" type="button">Theme</button>
+    <button class="btn" id="signout" type="button" hidden>Sign out</button>
+  </div>
+</div>
+</div></header>
+
+<div class="wrap">
+<div id="liveerr"></div>
+
+<section class="gate" id="gate">
+  <h2 id="gatetitle">Sign in to load the trend</h2>
+  <p id="gatetext">This page reads the <strong>Formulation Trendline — live feed</strong> sheet with your Google account.
+  Nothing is stored in this site: you see the data only if your account can open that sheet.</p>
+  <button class="btn primary" id="signin" type="button">Sign in with Google</button>
+  <p class="fine">Read-only access to Google Sheets is requested. You can revoke it at any time with Sign out.</p>
+</section>
+
+<div id="main" hidden>
+
+<div class="filterbar">
+  <div class="fbtop">
+    <span class="rlab">Formulation</span>
+    <span class="meta" id="fidcs"></span>
+    <button class="btn" id="fidall" type="button">Select all</button>
+  </div>
+  <div class="fidwrap" id="fidchips"></div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="Views">
+  <button class="tab" type="button" role="tab" id="tab-trend" data-v="trend"
+    aria-selected="true" aria-controls="v-trend">Trendline</button>
+  <button class="tab" type="button" role="tab" id="tab-sum" data-v="sum"
+    aria-selected="false" aria-controls="v-sum">Day / week summary</button>
+  <button class="tab" type="button" role="tab" id="tab-lb" data-v="lb"
+    aria-selected="false" aria-controls="v-lb">Leaderboard</button>
+  <button class="tab" type="button" role="tab" id="tab-exc" data-v="exc"
+    aria-selected="false" aria-controls="v-exc">Excursions<span class="tn" id="texc">0</span></button>
+</nav>
+
+<section class="view" id="v-trend" role="tabpanel" aria-labelledby="tab-trend">
+<div class="tiles" id="tiles"></div>
+
+<div class="card">
+  <h2 id="ptitle">Potency by ingredient, all formulations</h2>
+  <p class="cs" id="pcs"></p>
+  <div class="row"><span class="rlab">Ingredient</span><span id="ingchips"></span>
+    <span style="width:10px"></span><span class="rlab">View</span><span id="viewchips"></span></div>
+  <div class="row"><span class="rlab">Range</span><span id="presets"></span><span class="meta" id="rangelabel"></span></div>
+  <div class="legend" id="plg"></div>
+  <svg id="pot" viewBox="0 0 1000 400" role="img" aria-labelledby="ptitle"></svg>
+  <div class="hint">Drag across the strip to pick a window · drag the window to pan · drag an edge to resize · double-click to reset</div>
+  <svg id="brush" viewBox="0 0 1000 74"></svg>
+  <div id="heldnote"></div>
+</div>
+</section>
+
+<section class="view" id="v-sum" role="tabpanel" aria-labelledby="tab-sum" hidden>
+<div class="card" id="daycard">
+  <h2>Day / week summary</h2>
+  <p class="cs" id="daycs"></p>
+  <div class="dhead">
+    <label class="rlab" for="pmode" style="margin:0">Summarise by</label>
+    <select class="pmode" id="pmode">
+      <option value="day">Day</option>
+      <option value="week">Week</option>
+    </select>
+    <button class="btn" id="dprev" type="button">&larr; Previous</button>
+    <span class="dt" id="dlabel"></span>
+    <button class="btn" id="dnext" type="button">Next &rarr;</button>
+    <button class="btn" id="dlast" type="button">Latest</button>
+  </div>
+  <div class="daychips" id="daychips"></div>
+  <div class="tiles" id="dtiles"></div>
+  <div class="grid2" style="margin-top:16px">
+    <div>
+      <div class="eyebrow" style="margin:0 0 8px">By ingredient</div>
+      <div class="tbl"><table id="ding"></table></div>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin:0 0 8px">Other tests</div>
+      <table class="kv" id="dother"></table>
+    </div>
+  </div>
+  <div class="eyebrow" style="margin:22px 0 8px" id="dlotshead">Every lot compounded that day</div>
+  <div class="tbl"><table id="dlots"></table></div>
+</div>
+</section>
+
+<section class="view" id="v-lb" role="tabpanel" aria-labelledby="tab-lb" hidden>
+<div class="card">
+  <h2>Compounder leaderboard</h2>
+  <p class="cs" id="lbcs"></p>
+  <div class="dhead">
+    <label class="rlab" for="lbper" style="margin:0">Period</label>
+    <select class="pmode" id="lbper">
+      <option value="30">Last 30 days</option>
+      <option value="m">This month</option>
+      <option value="90">Last 90 days</option>
+      <option value="all">All time</option>
+    </select>
+    <label class="rlab" for="lbrole" style="margin:0 0 0 8px">Credit</label>
+    <select class="pmode" id="lbrole">
+      <option value="any">Every lot they worked on</option>
+      <option value="c">As compounder (named first)</option>
+      <option value="f">As filler (named second)</option>
+    </select>
+  </div>
+  <div class="lbhero" id="lbhero"></div>
+  <div class="tbl"><table class="lbt" id="lbt"></table></div>
+  <p class="note" id="lbnote" style="margin-top:14px"></p>
+</div>
+</section>
+
+<section class="view" id="v-exc" role="tabpanel" aria-labelledby="tab-exc" hidden>
+<div class="card">
+  <h2>Excursions and failures</h2>
+  <p class="cs" id="excs">Lots outside the ±7% control limit, newest first.</p>
+  <div class="tbl"><table id="exc"></table></div>
+</div>
+</section>
+
+<p class="note" id="pnote"></p>
+</div>
+</div>
+<div class="tip" id="tip"></div>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/live.js"></script>
+</body>
+</html>
